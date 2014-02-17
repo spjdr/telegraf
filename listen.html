@@ -1,0 +1,264 @@
+<html>
+<head>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<link rel="apple-touch-icon" href="assets/icon/apple-touch-icon.png" />
+<link rel="apple-touch-icon" sizes="57x57" href="assets/icon/apple-touch-icon-57x57.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="assets/icon/apple-touch-icon-72x72.png" />
+<link rel="apple-touch-icon" sizes="76x76" href="assets/icon/apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="assets/icon/apple-touch-icon-114x114.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="assets/icon/apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" sizes="144x144" href="assets/icon/apple-touch-icon-144x144.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="assets/icon/apple-touch-icon-152x152.png" />
+
+<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script> -->
+<script type="text/javascript" src="assets/js/jquery-1.11.0.min.js"></script>
+<link rel="stylesheet" href="assets/css/screen.css"/>
+</style>
+</head>
+<body>
+
+<audio id="player">
+<source src="assets/sounds/tut.ogg" type='audio/ogg; codecs="vorbis"'>
+<source src="assets/sounds/tut.mp3" type='audio/mpeg; codecs="mp3"'>
+</audio>
+<div class="title">
+	<h1>Telegraf</h1>
+	<div class="tagline">
+		af <a href="http://spjdr.dk">spjdr.dk</a>
+	</div>
+</div>
+
+<h2><a></a>Station <?php echo $station ?></h2>
+<div class="collapsible">
+	<div style="border: 1px solid grey">
+		<div id="chart"></div>
+	</div>
+</div>
+
+<h2><a></a>Oversætter</h2>
+<div class="collapsible">
+	<div style="padding: 10px; border: 1px solid grey">
+		<div id="code"></div>
+	</div>
+	<div style="padding: 10px; border: 1px solid grey">
+		<div id="message"></div>
+	</div>
+	<p><button class="button nice radius charcoal" id="reset">Ryd alt</button></p>
+</div>
+
+<h2><a></a>Indstillinger</h2>
+<div class="collapsible">
+<p id="speedselect">
+	Længden af en enhed:<br/>
+	<label for="speed400"><input type="radio" id="speed400" name="speed" value="400" /> 400ms</label><br/>
+	<label for="speed200"><input type="radio" id="speed200" name="speed" valeu="200" /> 200ms</label><br/>
+	<label for="speed100"><input type="radio" id="speed100" name="speed" value="100" checked=true/> 100ms</label><br/>
+	<label for="speed50"><input type="radio" id="speed50" name="speed" value="50" /> 50ms</label><br/>
+	<label for="speed30"><input type="radio" id="speed30" name="speed" value="30" /> 30ms</label>
+</p>
+</div>
+
+<div class="footer">
+<p><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a></p>
+
+<p>Source code released under <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 unported</a> (CC BY-SA 3.0 unported).</p>
+
+<p>Please place credit to SPJDR.dk, and include a link back to this page.</p>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+	
+	var p = document.getElementById('player');
+	var chart = $('div#chart');
+	var code = $('div#code');
+	var message = $('div#message');
+	var unit = 100; /* unit length in ms */
+	
+	var transmit = false;
+	var ntransmit = true;
+	
+	var span = false;
+	var counter = 0; /* counts current length of sign. is updated every 10 ms */
+	
+	var letter = "";
+	var lcounter = 0;
+		
+	var morses = {
+          "a": ".-",
+          "b": "-...",
+          "c": "-.-.",
+          "d": "-..",
+          "e": ".",
+          "f": "..-.",
+          "g": "--.",
+          "h": "....",
+          "i": "..",
+          "j": ".---",
+          "k": "-.-",
+          "l": ".-..",
+          "m": "--",
+          "n": "-.",
+          "o": "---",
+          "p": ".--.",
+          "q": "--.-",
+          "r": ".-.",
+          "s": "...",
+          "t": "-",
+          "u": "..-",
+          "v": "...-",
+          "w": ".--",
+          "x": "-..-",
+          "y": "-.--",
+          "z": "--..",
+          "ä":".-.-",
+          "œ": ".-.-",
+          "æ": ".-.-",
+          "ö": "---.",
+          "ø": "---.",
+          "à": ".--.-",
+          "å": ".--.-",
+          "*": "..--",
+          " ": "",
+          "1": ".----",
+          "2": "..---",
+          "3": "...--",
+          "4": "....-",
+          "5": ".....",
+          "6": "-....",
+          "7": "--...",
+          "8": "---..",
+          "9": "----.",
+          "0": "-----",
+          ".": ".-.-.-",
+          ",": "--..--",
+          "?": "..--..",
+          "'": ".----.",
+          "!": "-.-.--",
+          "/": "-..-.",
+          "(": "-.--.",
+		  ")": "-.--.-",
+		  "&": ".-...",
+  		  ":": "---...",
+		  ";": "-.-.-.",
+		  "+": ".-.-.",
+  		  "-": "-....-",
+  		  "_": "..--.-",
+		  "\"": ".-..-.",
+  		  "$": "...-..-",
+  		  "@": ".--.-.",
+  		  "ch": "----",
+    };		
+		
+	remorse = json_key_to_values(morses);
+	
+	var style = {
+	  ".": "&middot;&nbsp;",
+	  "-": "&ndash;&nbsp;",
+	  "/": "| "
+	};
+	
+	var cycle = 5;
+	
+	/* update every 10 milliseconds */	
+	setInterval(fillchart, cycle);
+	
+	function fillchart() {
+		if (ntransmit != transmit)
+		{
+			if (span!==false)
+			{
+				span.removeClass('current');
+			}
+		
+			if (transmit) {
+				span = $('<span/>',{'class':'transmit current','style':'width:1px'});
+				letter+=".";
+			} else {
+				span = $('<span/>',{'class':'notransmit current','style':'width:1px'});
+			}
+			counter=1;
+			
+			ntransmit=transmit;
+			
+			chart.prepend($('<div/>').append(span));
+		}
+		else 
+		{
+			if (!transmit) {
+				if (counter*cycle==7*unit) {
+					span.text('||');
+					
+					message.append(" ");			
+					
+					code.append('<span>|&nbsp;&nbsp;&nbsp;</span>')
+
+					letter="";
+					$('#chart div:gt(50)').remove();
+
+				} else if (counter*cycle==3*unit) {
+					span.text('|');
+
+					transletter = remorse[letter];
+					if (transletter==undefined) {transletter = "?";}
+					message.append(transletter);
+					
+					var morsecode="";					
+					for (var i in letter) {
+						morsecode += style[letter[i]];
+					}	
+					code.append('<span>'+transletter+'</br>&nbsp;'+morsecode+'</span><span>|</span>');
+
+					letter="";
+				}
+			}
+			
+			if (transmit) {
+				if (counter*cycle==3*unit) {
+					span.addClass('dah');
+					letter = letter.substr(0,letter.length-1) + "-";
+				}
+			}
+
+			counter+=1;
+			if (counter*cycle>unit*10) {
+				counter=Math.round(unit*10/cycle);
+				p.pause(); p.currentTime=0;	
+			}
+			span.attr('style','width:' + Math.round(counter/(unit/10)*cycle).toString() + 'px');
+		}
+	}
+	
+	$('#reset').click(function(){
+		letter = '';
+		span = false;
+
+		chart.html("");
+		code.html("");		
+		message.html("");
+	});
+	
+	$('input:radio','p#speedselect').change(function(){
+		unit = $('input:radio:checked','p#speedselect').val();
+	});
+	
+	$('h2').click(function(){
+		$(this).toggleClass('collapsed');
+		$(this).next('.collapsible').toggle();
+		
+	});
+	
+	});
+
+
+function json_key_to_values(input) {
+    var one, output = {};
+    for (one in input) {
+        if (input.hasOwnProperty(one)) {
+            output[input[one]] = one;
+        }
+    }
+    return output;
+}
+
+</script>
+</body>

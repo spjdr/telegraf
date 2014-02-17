@@ -1,0 +1,88 @@
+<html>
+<head>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<link rel="apple-touch-icon" href="assets/icon/apple-touch-icon.png" />
+<link rel="apple-touch-icon" sizes="57x57" href="assets/icon/apple-touch-icon-57x57.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="assets/icon/apple-touch-icon-72x72.png" />
+<link rel="apple-touch-icon" sizes="76x76" href="assets/icon/apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="assets/icon/apple-touch-icon-114x114.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="assets/icon/apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" sizes="144x144" href="assets/icon/apple-touch-icon-144x144.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="assets/icon/apple-touch-icon-152x152.png" />
+
+<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script> -->
+<script type="text/javascript" src="assets/js/jquery-1.11.0.min.js"></script>
+<link rel="stylesheet" href="assets/css/screen.css"/>
+</style>
+</head>
+<body>
+
+<div class="title">
+	<h1>Telegraf</h1>
+	<div class="tagline">
+		af <a href="http://spjdr.dk">spjdr.dk</a>
+	</div>
+</div>
+
+<h2>Introduktion til morse</h2>
+
+<div style="text-align: left; padding: 5px 10%">
+
+<p>Ved signalering ved morse sendes hvert tegn som en kombination af korte prikker <span class="transmit" style="width:10px"></span> eller lange streger <td> <span class="transmit dah long" ></span>.</p>
+<p>For eksempel skrives ordet "morse" som: </p>
+  <div style="line-height: 2em; margin-left: 5%; font-weight: bold;">	
+      <span class="transmit dah long"></span>
+  	  <span class="notransmit short"></span>
+	  <span class="transmit dah long"></span>
+      <span class="notransmit long">|</span>
+      
+      <span class="transmit dah long" ></span>
+  	  <span class="notransmit short" ></span>
+	  <span class="transmit dah long" ></span>
+	  <span class="notransmit short" ></span>
+	  <span class="transmit dah long" ></span>
+      <span class="notransmit long" >|</span>
+      
+      <span class="transmit short" ></span>
+  	  <span class="notransmit short" ></span>
+	  <span class="transmit dah long" ></span>
+	  <span class="notransmit short" ></span>
+	  <span class="transmit short" ></span>
+      <span class="notransmit long" >|</span>
+      
+      <span class="transmit short" ></span>
+  	  <span class="notransmit short" ></span>
+	  <span class="transmit short" ></span>
+	  <span class="notransmit short" ></span>
+	  <span class="transmit short" ></span>
+      <span class="notransmit long" >|</span>
+      
+	  <span class="transmit short" ></span>
+      <span class="notransmit" style="width:70px">||</span>
+      <div style="clear: both"></div>
+  </div>
+<p>Længden af en prik kaldes en "enhed". Længden af streger og mellemrum udregnes udfra længden af en <i>enhed</i>:</p>
+
+<ul>
+	<li>En prik er 1 enhed.</li>
+	<li>En streg er 3 enheder.</li>
+	<li>Mellem to tegn er der en pause på 1 enhed.</li>
+	<li>Mellem bogstaver er der en pause på 3 enheder.</li>
+	<li>Mellem ord er der en pause på 7 enheder.</li>
+</ul>
+
+<p>Du sender ved at trykke på en vilkårlig tast på tastaturet. Virker det ikke, kan du forsøge at trykke med musen på vinduet først og dernæst en tast på tastaturet. Virker det heller ikke, kan du sende en mail til kim@spjdr.dk.</p>
+
+</div>
+
+<p><a href="index.html">Tilbage</a></p>
+
+<div class="footer">
+<p><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a></p>
+
+<p>Source code released under <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">CC BY-SA 3.0 unported</a>.</p>
+<p>Fork from <a href="http://github.com/spjdr/telegraf">github.com/spjdr/telegraf</a>.</p>
+<p>Please place credit to SPJDR.dk and include a link back to this page.</p>
+</div>
+
+</body>
