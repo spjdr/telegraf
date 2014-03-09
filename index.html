@@ -164,7 +164,7 @@
 	  "/": "| "
 	};
 	
-	var cycle =30;
+	var cycle =34;
 	
 	/* update every 10 milliseconds */	
 	
@@ -173,53 +173,40 @@
 
 	var filler = function fillchart() {
 
-
 		console.log(new Date().getTime() - timer);
 		timer = new Date().getTime();
-		
-		if (ntransmit != transmit)
-		{
-			changefill();
-		}
-		else 
-		{
-			if (!transmit) {
-				fillnone();
-			}
-			
-			if (transmit) {
-				if (counter*cycle>3*unit && pau == 0) {
-					span.addClass('dah');
-					letter = letter.substr(0,letter.length-1) + "-";
-					pau == 1;
-				}
-			}
 
-			counter+=1;
-			if (counter*cycle>unit*10) {
-				counter=Math.round(unit*10/cycle);
-				p.pause(); p.currentTime=0;	
-			}
-			span.attr('style','width:' + Math.round(counter/(unit/10)*cycle).toString() + 'px');
+		if (!transmit) {
+			fillnone();
 		}
+			
+		if (transmit) {
+			if (counter*cycle>3*unit && pau == 0) {
+				span.addClass('dah');
+				letter = letter.substr(0,letter.length-1) + "-";
+				pau == 1;
+			}
+		}
+
+		counter+=1;
+		if (counter*cycle>unit*10) {
+			counter=Math.round(unit*10/cycle);
+			p.pause(); p.currentTime=0;	
+		}
+
+		span.attr('style','width:' + Math.round(counter/(unit/10)*cycle).toString() + 'px');
 	}
 
 	function changefill()
 	{
-		if (span!==false)
-		{
-			span.removeClass('current');
-		}
-	
 		if (transmit) {
-			span = $('<span/>',{'class':'transmit current','style':'width:1px'});
+			span = $('<span/>',{'class':'transmit','style':'width:1px'});
 			letter+=".";
 		} else {
-			span = $('<span/>',{'class':'notransmit current','style':'width:1px'});
+			span = $('<span/>',{'class':'notransmit','style':'width:1px'});
 		}
+
 		counter=1;
-		
-		ntransmit=transmit;
 		
 		chart.prepend($('<div/>').append(span));
 
@@ -273,14 +260,20 @@
 	$('#send').on('mousedown touchstart',function(){
 		$('body').addClass('click');
 		p.play();
-		transmit = true;
+		if (transmit==false) { 
+			transmit = true;
+			changefill();
+		}
 	});
 
 	$('#send').on('mouseup touchend',function(){
 		$('body').removeClass('click');
 		p.pause();
 		p.currentTime=0;
-		transmit = false;
+		if (transmit == true) {
+			transmit = false;
+			changefill();
+		}
 	});
 	
 	$('#reset').click(function(){
