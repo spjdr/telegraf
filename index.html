@@ -164,65 +164,28 @@
 	  "/": "| "
 	};
 	
-	var cycle =10;
+	var cycle =30;
 	
 	/* update every 10 milliseconds */	
-	setInterval(fillchart, cycle);
 	
-	function fillchart() {
+	var pau = 0;
+
+	var filler = function fillchart() {
 		if (ntransmit != transmit)
 		{
-			if (span!==false)
-			{
-				span.removeClass('current');
-			}
-		
-			if (transmit) {
-				span = $('<span/>',{'class':'transmit current','style':'width:1px'});
-				letter+=".";
-			} else {
-				span = $('<span/>',{'class':'notransmit current','style':'width:1px'});
-			}
-			counter=1;
-			
-			ntransmit=transmit;
-			
-			chart.prepend($('<div/>').append(span));
+			changefill();
 		}
 		else 
 		{
 			if (!transmit) {
-				if (counter*cycle==7*unit) {
-					span.text('||');
-					
-					message.append(" ");			
-					
-					code.append('<span>|&nbsp;&nbsp;&nbsp;</span>')
-
-					letter="";
-					$('#chart div:gt(50)').remove();
-
-				} else if (counter*cycle==3*unit) {
-					span.text('|');
-
-					transletter = remorse[letter];
-					if (transletter==undefined) {transletter = "?";}
-					message.append(transletter);
-					
-					var morsecode="";					
-					for (var i in letter) {
-						morsecode += style[letter[i]];
-					}	
-					code.append('<span>'+transletter+'</br>&nbsp;'+morsecode+'</span><span>|</span>');
-
-					letter="";
-				}
+				fillnone();
 			}
 			
 			if (transmit) {
-				if (counter*cycle==3*unit) {
+				if (counter*cycle>3*unit && pau == 0) {
 					span.addClass('dah');
 					letter = letter.substr(0,letter.length-1) + "-";
+					pau == 1;
 				}
 			}
 
@@ -234,18 +197,71 @@
 			span.attr('style','width:' + Math.round(counter/(unit/10)*cycle).toString() + 'px');
 		}
 	}
+
+	function changefill()
+	{
+		if (span!==false)
+		{
+			span.removeClass('current');
+		}
+	
+		if (transmit) {
+			span = $('<span/>',{'class':'transmit current','style':'width:1px'});
+			letter+=".";
+		} else {
+			span = $('<span/>',{'class':'notransmit current','style':'width:1px'});
+		}
+		counter=1;
+		
+		ntransmit=transmit;
+		
+		chart.prepend($('<div/>').append(span));
+
+		pau = 0;
+	}
+
+	function fillnone() {
+		if (counter*cycle>7*unit && pau == 1) {
+			pau = 2;
+
+			span.text('||');
+			
+			message.append(" ");			
+			
+			code.append('<span>|&nbsp;&nbsp;&nbsp;</span>')
+
+			letter="";
+			$('#chart div:gt(50)').remove();
+
+		} else if (counter*cycle>3*unit && pau == 0) {
+			pau = 1;
+
+			span.text('|');
+
+			transletter = remorse[letter];
+			if (transletter==undefined) {transletter = "?";}
+			message.append(transletter);
+			
+			var morsecode="";					
+			for (var i in letter) {
+				morsecode += style[letter[i]];
+			}	
+			code.append('<span>'+transletter+'</br>&nbsp;'+morsecode+'</span><span>|</span>');
+
+			letter="";
+
+		}
+	}
+
+
+	setInterval(filler, cycle);
 	
 	$(document).keydown(function(){
 		button.trigger('mousedown');
-		// p.play();
-		// transmit = true;
 	});
 	
 	$(document).keyup(function(){
 		button.trigger('mouseup');
-		// p.pause();
-		// p.currentTime=0;
-		// transmit = false;
 	});
 
 	$('#send').on('mousedown touchstart',function(){
@@ -261,7 +277,6 @@
 		transmit = false;
 	});
 	
-
 	$('#reset').click(function(){
 		letter = '';
 		span = false;
