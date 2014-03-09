@@ -147,12 +147,10 @@ body {
 	background-image: url('../img/sky.png');
 	z-index: 20;
 	background-position: 0 0;
-	transition: background-position 100s;
-
 }
 
 .float {
-	background-position: 500px 0;
+	/*background-position: 500px 0;*/
 }
 
 
