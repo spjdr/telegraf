@@ -169,8 +169,14 @@
 	/* update every 10 milliseconds */	
 	
 	var pau = 0;
+	var timer = new Date().getTime();
 
 	var filler = function fillchart() {
+
+
+		console.log(new Date().getTime() - timer);
+		timer = new Date().getTime();
+		
 		if (ntransmit != transmit)
 		{
 			changefill();
