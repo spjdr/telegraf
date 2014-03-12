@@ -29,6 +29,7 @@
 	<div class="highlights"><a style="width: 100%; background: #FEDEA2" href="http://spjdrpedia.dk/wiki/Kategori:Signalering" class="signalering"><span>Signalering</span></a></div>
 	<div class="menu">
 		<a href="http://spjdr.dk/telegraf" class="logo"></a>
+		<a id="sound" class="sound"></a>
 	</div>
 </div>
 
@@ -38,9 +39,11 @@
 	<div class="button">
 	<a class="send" id="send"><span>S</span></a>
 	</div>
-	&nbsp;
 	<div class="telegraph"></div>
-	<img class="line" src="assets/img/lines.svg"/>
+	<div class="line">
+	<img src="assets/img/lines.svg"/>
+	<span>&nbsp;</span>
+	</div>
 	<div class="printer"></div>
 </div>
 </div>
@@ -49,17 +52,17 @@
 <div class="reciever">	
 	
 	<div class="chart" id="chart"></div>
-	<div class="code" id="code"><div class="translate">✎</div>&nbsp;</div>
-	<div class="code message" id="message"><div class="translate">❞</div>&nbsp;</div>
+	<div class="code" id="code"><div class="icon"></div>&nbsp;</div>
+	<div class="message" id="message"><div class="icon"></div>&nbsp;</div>
 
-<div class="code" id="speedselect"><div class="translate">⚙</div>
-	Længden af en enhed:<br/>
-	<label for="speed400"><input type="radio" id="speed400" name="speed" value="400" /> 400ms</label><br/>
-	<label for="speed400"><input type="radio" id="speed200" name="speed" value="200" /> 200ms</label><br/>
-	<label for="speed100"><input type="radio" id="speed100" name="speed" value="100" checked=true/> 100ms</label><br/>
-	<label for="speed50"><input type="radio" id="speed50" name="speed" value="50" /> 50ms</label><br/>
-	<label for="speed30"><input type="radio" id="speed30" name="speed" value="30" /> 30ms</label>
-</div>
+	<div class="speedselect" id="speedselect"><div class="icon"></div>
+		<h3>Hastighed:</h3>
+		<label for="speed400"><input type="radio" id="speed400" name="speed" value="300" /> Laaaaangsomst</label><br/>
+		<label for="speed400"><input type="radio" id="speed200" name="speed" value="150" /> Langsommere</label><br/>
+		<label for="speed100"><input type="radio" id="speed100" name="speed" value="110" checked=true/> Normal</label><br/>
+		<label for="speed50"><input type="radio" id="speed50" name="speed" value="70" /> Hurtig</label><br/>
+		<label for="speed30"><input type="radio" id="speed30" name="speed" value="50" /> Vroouumm!</label>
+	</div>
 </div>
 
 </div>
@@ -169,12 +172,12 @@
 	/* update every 10 milliseconds */	
 	
 	var pau = 0;
-	var timer = new Date().getTime();
+	// var timer = new Date().getTime();
 
 	var filler = function fillchart() {
 
-		console.log(new Date().getTime() - timer);
-		timer = new Date().getTime();
+		// console.log(new Date().getTime() - timer);
+		// timer = new Date().getTime();
 
 		if (!transmit) {
 			fillnone();
@@ -246,8 +249,7 @@
 		}
 	}
 
-
-	setInterval(filler, cycle);
+	
 	
 	$(document).keydown(function(){
 		button.trigger('mousedown');
@@ -257,16 +259,21 @@
 		button.trigger('mouseup');
 	});
 
-	$('#send').on('mousedown touchstart',function(){
+	var sending = false;
+	button.on('mousedown touchstart',function(){
 		$('body').addClass('click');
-		p.play();
+		if (!muted) { p.play(); }
 		if (transmit==false) { 
 			transmit = true;
 			changefill();
 		}
+		if (!sending) {
+			setInterval(filler, cycle);
+			sending = true
+		}
 	});
 
-	$('#send').on('mouseup touchend',function(){
+	button.on('mouseup touchend',function(){
 		$('body').removeClass('click');
 		p.pause();
 		p.currentTime=0;
@@ -276,6 +283,20 @@
 		}
 	});
 	
+	var muted = false;
+
+	$('#sound').on('click',function(){
+		if (muted) {
+			$(this).removeClass('muted');
+		} else {
+			$(this).addClass('muted');
+			p.pause();
+			p.currentTime = 0;
+		}
+		muted = !muted;
+	});
+
+
 	$('#reset').click(function(){
 		letter = '';
 		span = false;
@@ -289,6 +310,31 @@
 		unit = $('input:radio:checked','#speedselect').val();
 	});
 	
+
+	(function() {
+	    var lastTime = 0;
+	    var vendors = ['ms', 'moz', 'webkit', 'o'];
+	    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+	        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+	        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
+	                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
+	    }
+	 
+	    if (!window.requestAnimationFrame)
+	        window.requestAnimationFrame = function(callback, element) {
+	            var currTime = new Date().getTime();
+	            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+	            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+	              timeToCall);
+	            lastTime = currTime + timeToCall;
+	            return id;
+	        };
+	 
+	    if (!window.cancelAnimationFrame)
+	        window.cancelAnimationFrame = function(id) {
+	            clearTimeout(id);
+	        };
+	}());
 	// $('#sky').addClass('float');
 
 });

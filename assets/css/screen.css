@@ -1,7 +1,7 @@
 
 
 /* Custom font via Fontface */
-@font-face {
+/*@font-face {
   font-family: 'Bitter';
   src: url('http://spjdrpedia.dk/w/skins/uniform/type/Bitter-Regular-webfont.eot');
   src: url('http://spjdrpedia.dk/w/skins/uniform/type/Bitter-Regular-webfont.eot?#iefix') format('embedded-opentype'),
@@ -10,7 +10,7 @@
     url('http://spjdrpedia.dk/w/skins/uniform/type/Bitter-Regular-webfont.svg#BitterRegular') format('svg');
   font-weight: normal;
   font-style: normal;
-}
+}*/
  
 @font-face {
     font-family: 'IstokWeb';
@@ -23,10 +23,6 @@
     font-style: normal;
 }
 
-/*	--------------------------------------------------
-Buttons
--------------------------------------------------- */
-
 body { 
 	text-align: center; 
 	font-family: 'IstokWeb', Verdana, sans-serif;
@@ -35,7 +31,7 @@ body {
 	background: #f8f8f8;
 }
 
-/*body */
+/*  header */
 
 .header {
 	text-align: center;
@@ -45,7 +41,6 @@ body {
 	left: 0;
 	background: #f8f8f8;
 	border-bottom: 1px solid #e5e5e5;
-	/*height: 72px;*/
 }
 
 
@@ -55,11 +50,7 @@ body {
 }
 
 .logo {
-	/*position: absolute;*/
-	/*top: 10px;*/
-	/*left: 10px;*/
 	display: inline-block;
-	/*background-color: #222;*/
 	height: 60px;
 	line-height: 60px;
 	width: 280px;
@@ -82,6 +73,23 @@ body {
 	max-width: 1200px;
 	width: 100%;
 }
+
+/* sound icon */
+
+	.sound {
+		background-image: url('../img/tele.svg');
+		background-position: -120px -400px;
+		width: 40px;
+		height: 40px;
+		display: inline-block;
+		position: absolute;
+		top: 10px;
+		right: 20px;
+	}
+
+	.muted {
+		background-position: -160px -400px; 
+	}
 
 /* highlights */
 
@@ -107,7 +115,7 @@ body {
 	font-weight: normal;
 	padding-top: 10px;
 	color: rgba(0,0,0,.5);
-}
+}d
 
 .highlights:hover {
 	height: 42px;
@@ -129,7 +137,7 @@ body {
 	background-color: red;
 }
 
-/**/
+/* wrapper */
 
 .wrapper {
 	max-width: 1200px;
@@ -139,7 +147,7 @@ body {
 }
 
 
-/* send */
+/* send animation */
 
 .sky {
 	height: 290px;
@@ -149,18 +157,12 @@ body {
 	background-position: 0 0;
 }
 
-.float {
-	/*background-position: 500px 0;*/
-}
-
-
 .sender {
 	position: relative;
 	height: 290px;
 	line-height: 290px;
 	text-align: left;
 }
-
 
 .send {
 	display: inline-block;
@@ -183,6 +185,7 @@ body {
 	text-align: center;
 	top: 90px;
 	left: 40px;
+	z-index: 10;
 }
 
 .send span {
@@ -203,35 +206,48 @@ body {
 
 
 .telegraph {
-	background-image: url('../img/teleoff.png');
+	background-image: url('../img/tele.png');
 	height: 55px;
 	width: 130px;
 	background-repeat: no-repeat;
-	background-position: left top;
+	background-position: 0 -330px;
 	position: absolute;
-	top: 105px;
+	top: 110px;
 	left: 150px;
+	z-index: 1
 }
 
 .click .telegraph {
-	background-image: url('../img/teleon.png');
+	background-position: -140px -330px;
 }
 
-.modernizrsvg .telegraph {
-	background-image: url('../img/tele-01.svg');
-}
+.modernizrsvg .telegraph { background-image: url('../img/tele.svg'); }
 
-.modernizrsvg .click .telegraph {
-	background-image: url('../img/tele-02.svg');
-}
 
+/* line */
 
 .line {
-	width: 72%;
-	display: inline-block;
 	margin-left: 260px;
+	margin-right: 20px;
+	height: 290px;
+	line-height: 290px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 0
+}
+
+.line img {
+	width: 98%;
 	vertical-align: middle;
 }
+
+.line span {
+	display: inline-block;
+	width: 0;
+}
+
+/* printer */
 
 .printer {
 	z-index: 10;
@@ -240,25 +256,18 @@ body {
 	position: absolute;
 	top: 0px;
 	right: 20px;
-	background-image: url('../img/tele-03.svg');
-	background-position: top left;
+	background-image: url('../img/tele.png');
+	background-position: -70px 0;
 	background-repeat: no-repeat;
 }
 
-
 .click .printer {
-	background-image: url('../img/tele-04.svg');
+	background-position: 0 0;
 }
 
-/* footer*/
+.modernizrsvg .printer { background-image: url('../img/tele.svg'); }
 
-.footer {
-  font-size: 90%;
-  background-color: #e5e5e5;
-  padding: 20px;
-}
-
-/* TRANSMIT */
+/* Morse animation */
 
 .chart {
 	margin: 0 50px 30px 0 ;
@@ -303,18 +312,27 @@ body {
 	/*vertical-align: top;*/
 }
 
-/**/
+/* Icon */
+/* Entypo pictograms by Daniel Bruce — www.entypo.com */
+/* http://entypo.com */
 
-
-.translate {
-	font-size: 30px;
-	color: #e5e5e5;
+.icon {
 	position: absolute;
-	top: center;
-	left: -40px;
+	top: 10px;
+	left: -50px;
+	background-image: url('../img/tele.png');
+	background-repeat: no-repeat;
+	width: 40px;
+	height: 40px;
 }
 
-.code {
+.modernizrsvg .icon { background-image: url('../img/tele.svg'); }
+
+.code .icon { background-position: 0 -400px; }
+.message .icon { background-position: -80px -400px; }
+.speedselect .icon { background-position: -40px -400px; }
+
+.code, .message, .speedselect {
 	font-size: 9pt;
 	font-family: Courier,monospace;
 	border: 1px solid #ddd;
@@ -323,9 +341,10 @@ body {
 	margin: 20px auto 20px auto;
 	padding: 10px;
 	display: block;
-	border-left: 50px solid #888;
+	border-left: 60px solid #888;
 	position: relative;
 	max-width: 600px;
+	min-height: 40px;
 }
 
 .code span {
@@ -340,3 +359,62 @@ body {
 	text-transform: uppercase;
 	font-family: Courier,monospace;
 }
+
+/* footer*/
+
+.footer {
+  font-size: 90%;
+  background-color: #e5e5e5;
+  padding: 20px;
+}
+
+/* tablet */
+
+@media only screen and (max-width : 700px) {
+	.telegraph {
+		display: none;
+	}
+
+	.line {
+		margin-left: 110px;
+		margin-right: 40px;
+	}
+}
+
+/* mobile last */
+
+@media only screen and (max-width : 450px) {
+	.sky {height: auto; background: none;}
+	.sender {
+		text-align: center;
+		height: auto;
+		/*padding: 40px 0;*/
+	}
+	.send {
+		position: static;
+		top: 0;
+		left: 0;
+		margin: 40px auto;
+	}
+
+	.click .send {
+		margin: 41px auto 39px;
+	}
+
+	.telegraph {
+		display: none;
+	}
+
+	.line img {
+		display: none
+	}
+
+	.printer {
+		display: none;
+	}
+
+	.chart { 
+		margin: 0 10px 30px 0 ;
+	}
+}
+
