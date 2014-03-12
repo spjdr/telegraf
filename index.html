@@ -1,9 +1,13 @@
 <html>
 <head>
 	<meta charset="utf-8">
- 	<meta name="description" content="Telegraf.">
+ 	<meta name="description" content="En telegraf. Træn dine morse-skills og opnå uvurerlig ...|_|._.|.|.|_|_._.|._.|. ">
 	<meta name="apple-mobile-web-app-capable" content="yes"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+	<meta property="og:title" content="SPJDRtelegraf"/>
+	<meta property="og:url" content="http://spjdr.dk/telegraf/"/>
+	<meta property="og:image" content="http://spjdr.dk/telegraf/assets/icon/telegraf-icon-big.png"/>
+
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 	<link rel="apple-touch-icon" href="assets/icon/apple-touch-icon.png" />
 	<link rel="apple-touch-icon" sizes="57x57" href="assets/icon/apple-touch-icon-57x57.png" />
@@ -66,7 +70,10 @@
 </div>
 
 </div>
-
+<div class="footer" style="background:#eee; margin-top: 40px">
+	<p>Du kan læse meget mere om morse på <a href="http://spjdrpedia.dk/wiki/Morse">SPJDRpedia.dk/wiki/Morse</a>.</p>
+	<p>Vil du lære morsealfabetet udenad? Så læs <a href="http://spjdrpedia.dk/wiki/Lær_morsealfabetet_udenad">SPJDRpedia.dk/wiki/Lær morsealfabetet udenad</a>.</p>
+</div>
 <div class="footer">
 	<p>Telegrafen er bygget af <a class="spdjr" href="http://spjdr.dk">SPJDR</a>. </p>
 
@@ -245,12 +252,10 @@
 			code.append('<span>'+transletter+'</br>&nbsp;'+morsecode+'</span><span>|</span>');
 
 			letter="";
-
 		}
 	}
-
 	
-	
+	// keyboard clicks
 	$(document).keydown(function(){
 		button.trigger('mousedown');
 	});
@@ -259,6 +264,7 @@
 		button.trigger('mouseup');
 	});
 
+	// button
 	var sending = false;
 	button.on('mousedown touchstart',function(){
 		$('body').addClass('click');
@@ -283,8 +289,8 @@
 		}
 	});
 	
+	// sound
 	var muted = false;
-
 	$('#sound').on('click',function(){
 		if (muted) {
 			$(this).removeClass('muted');
@@ -296,7 +302,7 @@
 		muted = !muted;
 	});
 
-
+	// reset?
 	$('#reset').click(function(){
 		letter = '';
 		span = false;
@@ -306,10 +312,10 @@
 		message.html("");
 	});
 	
+	// select speed
 	$('input:radio','#speedselect').change(function(){
 		unit = $('input:radio:checked','#speedselect').val();
 	});
-	
 
 	(function() {
 	    var lastTime = 0;
@@ -335,10 +341,7 @@
 	            clearTimeout(id);
 	        };
 	}());
-	// $('#sky').addClass('float');
-
 });
-
 
 function json_key_to_values(input) {
     var one, output = {};
@@ -351,7 +354,6 @@ function json_key_to_values(input) {
 }
 
 </script>
-
 <script type='text/javascript'>
 /* Modernizr 2.7.1 (Custom Build) | MIT & BSD
  * Build: http://modernizr.com/download/#-svg-cssclasses-cssclassprefix:modernizr
